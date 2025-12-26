@@ -1,26 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { usePipBoy } from '../context/PipBoyContext';
 
-const createSound = (frequency: number, duration: number, type: OscillatorType = 'sine'): string => {
-  const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-  const oscillator = audioContext.createOscillator();
-  const gainNode = audioContext.createGain();
-
-  oscillator.connect(gainNode);
-  gainNode.connect(audioContext.destination);
-
-  oscillator.frequency.value = frequency;
-  oscillator.type = type;
-
-  gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-  gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-
-  oscillator.start(audioContext.currentTime);
-  oscillator.stop(audioContext.currentTime + duration);
-
-  return '';
-};
-
 export const usePipBoySounds = () => {
   const { settings } = usePipBoy();
   const audioContextRef = useRef<AudioContext | null>(null);

@@ -14,7 +14,7 @@ interface YouTubeSectionProps {
   onClose?: () => void;
 }
 
-const YouTubeSection: React.FC<YouTubeSectionProps> = ({ onClose }) => {
+const YouTubeSection: React.FC<YouTubeSectionProps> = () => {
   const { playClick } = usePipBoySounds();
   const [selectedVideo, setSelectedVideo] = useState<YouTubeVideo | null>(null);
   const [videos, setVideos] = useState<YouTubeVideo[]>([]);

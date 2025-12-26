@@ -23,6 +23,8 @@ interface PipBoyDB extends DBSchema {
   };
 }
 
+type StoreName = 'inventory' | 'quests' | 'notes' | 'apparel' | 'locations';
+
 let db: IDBPDatabase<PipBoyDB> | null = null;
 
 export const initDB = async (): Promise<IDBPDatabase<PipBoyDB>> => {
@@ -51,22 +53,23 @@ export const initDB = async (): Promise<IDBPDatabase<PipBoyDB>> => {
   return db;
 };
 
-export const saveToDB = async <T>(storeName: keyof PipBoyDB, data: T): Promise<void> => {
+export const saveToDB = async <T>(storeName: StoreName, data: T): Promise<void> => {
   const database = await initDB();
   await database.put(storeName, data as any);
 };
 
-export const getFromDB = async <T>(storeName: keyof PipBoyDB, key: string): Promise<T | undefined> => {
+export const getFromDB = async <T>(storeName: StoreName, key: string): Promise<T | undefined> => {
   const database = await initDB();
   return database.get(storeName, key) as T | undefined;
 };
 
-export const getAllFromDB = async <T>(storeName: keyof PipBoyDB): Promise<T[]> => {
+export const getAllFromDB = async <T>(storeName: StoreName): Promise<T[]> => {
   const database = await initDB();
-  return database.getAll(storeName) as T[];
+  const results = await database.getAll(storeName);
+  return results as T[];
 };
 
-export const deleteFromDB = async (storeName: keyof PipBoyDB, key: string): Promise<void> => {
+export const deleteFromDB = async (storeName: StoreName, key: string): Promise<void> => {
   const database = await initDB();
   await database.delete(storeName, key);
 };
