@@ -1,0 +1,120 @@
+/* Mobile-specific styles */
+
+/* Touch-friendly button sizes */
+@media (max-width: 768px) {
+  .pipboy-tab-button {
+    padding: 12px 20px;
+    font-size: 16px;
+    min-height: 44px; /* iOS touch target minimum */
+    min-width: 44px;
+  }
+
+  .pipboy-button {
+    padding: 14px 24px;
+    font-size: 16px;
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .pipboy-header h1 {
+    font-size: 20px;
+  }
+
+  .stat-value {
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 14px;
+  }
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: max(0px)) {
+  .pipboy-container {
+    padding-top: max(10px, env(safe-area-inset-top));
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+    padding-left: max(10px, env(safe-area-inset-left));
+    padding-right: max(10px, env(safe-area-inset-right));
+  }
+}
+
+/* Full-screen mode support */
+@media (display-mode: standalone) {
+  body {
+    overscroll-behavior: none;
+  }
+
+  .pipboy-container {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Swipe gestures */
+.pipboy-content {
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent text selection on buttons */
+.pipboy-button,
+.pipboy-tab-button {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Responsive layout adjustments */
+@media (max-width: 480px) {
+  .pipboy-tabs {
+    gap: 3px;
+  }
+
+  .pipboy-tab-button {
+    padding: 10px 12px;
+    font-size: 12px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pipboy-content {
+    padding: 10px;
+  }
+
+  .stat-display {
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+}
+
+/* Landscape orientation */
+@media (orientation: landscape) and (max-height: 500px) {
+  .pipboy-header {
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+
+  .pipboy-header h1 {
+    font-size: 16px;
+  }
+
+  .pipboy-tabs {
+    margin-bottom: 5px;
+  }
+
+  .pipboy-tab-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+/* Prevent zoom on input focus */
+@media (max-width: 768px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+

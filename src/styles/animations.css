@@ -1,0 +1,257 @@
+/* Boot Animation */
+@keyframes boot-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes boot-typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes boot-scroll {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+.boot-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: boot-fade-in 0.5s ease-out;
+}
+
+.boot-text {
+  font-family: 'Courier New', monospace;
+  color: #00FF41;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  text-shadow: 0 0 10px #00FF41;
+  max-width: 90%;
+  overflow: hidden;
+}
+
+.boot-typing {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #00FF41;
+  animation: boot-typing 2s steps(40, end), blink-cursor 0.75s step-end infinite;
+}
+
+@keyframes blink-cursor {
+  from, to { border-color: transparent; }
+  50% { border-color: #00FF41; }
+}
+
+/* Tab Transitions */
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-right {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-out-left {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+.tab-enter-right {
+  animation: slide-in-right 0.3s ease-out;
+}
+
+.tab-enter-left {
+  animation: slide-in-left 0.3s ease-out;
+}
+
+.tab-exit-right {
+  animation: slide-out-right 0.3s ease-out;
+}
+
+.tab-exit-left {
+  animation: slide-out-left 0.3s ease-out;
+}
+
+/* Number Counting Animation */
+@keyframes count-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.count-animate {
+  animation: count-up 0.5s ease-out;
+}
+
+/* Button Press Animation */
+@keyframes button-press {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.button-press {
+  animation: button-press 0.2s ease-out;
+}
+
+/* Screen Shake */
+@keyframes screen-shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+.screen-shake {
+  animation: screen-shake 0.5s;
+}
+
+/* Static Noise */
+@keyframes static {
+  0% { opacity: 0.02; }
+  50% { opacity: 0.05; }
+  100% { opacity: 0.02; }
+}
+
+.static-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 65, 0.03) 2px,
+      rgba(0, 255, 65, 0.03) 4px
+    );
+  pointer-events: none;
+  z-index: 1002;
+  animation: static 0.1s infinite;
+}
+
+/* Quest Completion */
+@keyframes quest-complete {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+}
+
+.quest-complete {
+  animation: quest-complete 0.5s ease-out;
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+/* Radio Visualizer */
+@keyframes visualizer-bar {
+  0%, 100% { height: 20%; }
+  50% { height: 100%; }
+}
+
+.visualizer-bar {
+  animation: visualizer-bar 0.5s ease-in-out infinite;
+}
+
+/* Fade In */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+/* Pulse */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+

@@ -1,0 +1,554 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --pipboy-green: #00FF41;
+  --pipboy-bright-green: #7FFF00;
+  --pipboy-dark-green: #00CC33;
+  --pipboy-darker-green: #009922;
+  --pipboy-bg: #000000;
+  --pipboy-bg-dark: #0a0a0a;
+  --pipboy-border: #00FF41;
+  --pipboy-border-dark: #00CC33;
+  --pipboy-glow: rgba(0, 255, 65, 0.6);
+  --pipboy-glow-strong: rgba(127, 255, 0, 0.8);
+  --pipboy-shadow: rgba(0, 255, 65, 0.3);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+body {
+  font-family: 'Share Tech Mono', 'Courier New', 'Courier', monospace;
+  background: var(--pipboy-bg);
+  color: var(--pipboy-green);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+/* CRT Screen Effect */
+.pipboy-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--pipboy-bg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+
+/* Scanlines overlay */
+.pipboy-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.2) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+}
+
+/* Screen glow effect */
+.pipboy-screen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 255, 65, 0.03) 100%
+  );
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* Vignette effect */
+.pipboy-vignette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  z-index: 1001;
+}
+
+/* Main container */
+.pipboy-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  padding: 15px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(10, 10, 10, 0.9) 100%);
+}
+
+/* Header */
+.pipboy-header {
+  border: 3px solid var(--pipboy-border);
+  border-style: double;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  text-align: center;
+  box-shadow: 
+    0 0 15px var(--pipboy-glow),
+    inset 0 0 20px rgba(0, 255, 65, 0.1),
+    0 0 0 1px var(--pipboy-border-dark);
+  background: 
+    linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 20, 0, 0.7) 100%),
+    radial-gradient(circle at center, rgba(0, 255, 65, 0.05) 0%, transparent 70%);
+  position: relative;
+}
+
+.pipboy-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid var(--pipboy-border-dark);
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.pipboy-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow: 
+    0 0 10px var(--pipboy-green),
+    0 0 20px var(--pipboy-glow),
+    0 0 30px rgba(0, 255, 65, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+/* Tab Navigation */
+.pipboy-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 5px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 255, 65, 0.2);
+}
+
+.pipboy-tab-button {
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid var(--pipboy-border);
+  border-style: double;
+  color: var(--pipboy-green);
+  padding: 10px 18px;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 1.5px;
+  box-shadow: 
+    0 0 5px rgba(0, 255, 65, 0.3),
+    inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.pipboy-tab-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--pipboy-green), transparent);
+  transition: left 0.4s ease;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+.pipboy-tab-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--pipboy-green);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: -1;
+}
+
+.pipboy-tab-button:hover::before {
+  left: 100%;
+}
+
+.pipboy-tab-button:hover::after,
+.pipboy-tab-button.active::after {
+  transform: translateX(0);
+}
+
+.pipboy-tab-button:hover {
+  color: var(--pipboy-bg);
+  box-shadow: 
+    0 0 15px var(--pipboy-glow),
+    0 0 25px rgba(0, 255, 65, 0.4),
+    inset 0 0 15px rgba(0, 255, 65, 0.2);
+  border-color: var(--pipboy-bright-green);
+}
+
+.pipboy-tab-button.active {
+  color: var(--pipboy-bg);
+  background: var(--pipboy-green);
+  box-shadow: 
+    0 0 20px var(--pipboy-glow-strong),
+    0 0 35px rgba(0, 255, 65, 0.5),
+    inset 0 0 20px rgba(0, 0, 0, 0.3);
+  border-color: var(--pipboy-bright-green);
+  font-weight: 700;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+}
+
+.pipboy-tab-button > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Tab Content */
+.pipboy-content {
+  flex: 1;
+  border: 3px solid var(--pipboy-border);
+  border-style: double;
+  padding: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: 
+    linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 10, 0, 0.9) 100%),
+    radial-gradient(circle at top left, rgba(0, 255, 65, 0.03) 0%, transparent 50%);
+  box-shadow: 
+    inset 0 0 30px rgba(0, 255, 65, 0.15),
+    inset 0 0 60px rgba(0, 0, 0, 0.8),
+    0 0 0 1px var(--pipboy-border-dark);
+  position: relative;
+}
+
+.pipboy-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid rgba(0, 255, 65, 0.2);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pipboy-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.pipboy-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.8);
+  border-left: 1px solid rgba(0, 255, 65, 0.2);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.pipboy-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--pipboy-green) 0%, var(--pipboy-dark-green) 100%);
+  border: 1px solid var(--pipboy-border-dark);
+  border-radius: 2px;
+  box-shadow: 
+    0 0 5px rgba(0, 255, 65, 0.5),
+    inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.pipboy-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--pipboy-bright-green) 0%, var(--pipboy-green) 100%);
+  box-shadow: 
+    0 0 10px rgba(0, 255, 65, 0.7),
+    inset 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Stat Display */
+.stat-display {
+  margin-bottom: 18px;
+  padding: 12px 15px;
+  border-left: 4px solid var(--pipboy-border);
+  border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+  background: 
+    linear-gradient(90deg, rgba(0, 255, 65, 0.08) 0%, rgba(0, 255, 65, 0.02) 100%),
+    rgba(0, 0, 0, 0.4);
+  box-shadow: 
+    inset 0 0 10px rgba(0, 255, 65, 0.1),
+    0 2px 5px rgba(0, 0, 0, 0.5);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.stat-display::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--pipboy-bright-green) 0%, var(--pipboy-green) 50%, var(--pipboy-dark-green) 100%);
+  box-shadow: 0 0 10px var(--pipboy-green);
+}
+
+.stat-display:hover {
+  background: 
+    linear-gradient(90deg, rgba(0, 255, 65, 0.12) 0%, rgba(0, 255, 65, 0.04) 100%),
+    rgba(0, 0, 0, 0.5);
+  box-shadow: 
+    inset 0 0 15px rgba(0, 255, 65, 0.15),
+    0 2px 8px rgba(0, 255, 65, 0.3);
+}
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--pipboy-dark-green);
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+  opacity: 0.9;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  text-shadow: 
+    0 0 8px var(--pipboy-green),
+    0 0 15px rgba(0, 255, 65, 0.4);
+  letter-spacing: 1px;
+}
+
+/* Buttons */
+.pipboy-button {
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid var(--pipboy-border);
+  border-style: double;
+  color: var(--pipboy-green);
+  padding: 12px 24px;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 1.5px;
+  box-shadow: 
+    0 0 8px rgba(0, 255, 65, 0.3),
+    inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.pipboy-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--pipboy-green), transparent);
+  transition: left 0.4s ease;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+.pipboy-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--pipboy-green);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: -1;
+}
+
+.pipboy-button:hover::before {
+  left: 100%;
+}
+
+.pipboy-button:hover::after {
+  transform: translateX(0);
+}
+
+.pipboy-button:hover {
+  color: var(--pipboy-bg);
+  box-shadow: 
+    0 0 20px var(--pipboy-glow),
+    0 0 30px rgba(0, 255, 65, 0.4),
+    inset 0 0 15px rgba(0, 255, 65, 0.2);
+  border-color: var(--pipboy-bright-green);
+}
+
+.pipboy-button:active {
+  transform: scale(0.96);
+  box-shadow: 
+    0 0 15px var(--pipboy-glow),
+    inset 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+.pipboy-button > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Input fields */
+.pipboy-input {
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid var(--pipboy-border);
+  border-style: double;
+  color: var(--pipboy-green);
+  padding: 10px 12px;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  width: 100%;
+  outline: none;
+  box-shadow: 
+    inset 0 0 10px rgba(0, 0, 0, 0.8),
+    0 0 5px rgba(0, 255, 65, 0.2);
+  transition: all 0.3s ease;
+}
+
+.pipboy-input:focus {
+  box-shadow: 
+    0 0 15px var(--pipboy-glow),
+    inset 0 0 15px rgba(0, 255, 65, 0.1);
+  border-color: var(--pipboy-bright-green);
+  background: rgba(0, 0, 0, 0.9);
+}
+
+/* List items */
+.pipboy-list {
+  list-style: none;
+}
+
+.pipboy-list-item {
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(0, 255, 65, 0.25);
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.3);
+  margin-bottom: 2px;
+  position: relative;
+}
+
+.pipboy-list-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: linear-gradient(90deg, var(--pipboy-green), transparent);
+  transition: width 0.3s ease;
+  opacity: 0.3;
+}
+
+.pipboy-list-item:hover {
+  background: 
+    linear-gradient(90deg, rgba(0, 255, 65, 0.15) 0%, rgba(0, 255, 65, 0.05) 100%),
+    rgba(0, 0, 0, 0.5);
+  border-left: 4px solid var(--pipboy-border);
+  padding-left: 11px;
+  box-shadow: 
+    inset 0 0 15px rgba(0, 255, 65, 0.1),
+    0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.pipboy-list-item:hover::before {
+  width: 100%;
+}
+
+.pipboy-list-item:last-child {
+  border-bottom: none;
+}
+
+/* Screen flicker animation */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.985; }
+}
+
+.pipboy-screen {
+  animation: flicker 0.2s infinite;
+  background: 
+    radial-gradient(ellipse at center, rgba(0, 255, 65, 0.02) 0%, transparent 70%),
+    var(--pipboy-bg);
+}
+
+/* Glow pulse */
+@keyframes glow-pulse {
+  0%, 100% { 
+    text-shadow: 0 0 5px var(--pipboy-green);
+  }
+  50% { 
+    text-shadow: 0 0 15px var(--pipboy-green), 0 0 25px var(--pipboy-green);
+  }
+}
+
+.glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* External Links */
+.pipboy-list-item a,
+.pipboy-list-item[style*="cursor: pointer"] {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  width: 100%;
+}
+
+.pipboy-list-item[style*="cursor: pointer"]:hover .stat-value {
+  text-shadow: 
+    0 0 10px var(--pipboy-green),
+    0 0 20px var(--pipboy-glow),
+    0 0 30px rgba(0, 255, 65, 0.4);
+  transform: translateX(5px);
+  transition: all 0.3s ease;
+}
+
